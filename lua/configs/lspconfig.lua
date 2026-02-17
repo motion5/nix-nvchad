@@ -161,13 +161,16 @@ vim.lsp.enable "powershell_es"
 -- end
 -- vim.lsp.enable "roslyn"
 
+local clangdFiletypes = { "c", "cpp", "objc", "objcpp", "cuda", "proto" }
 if osName == "Linux" then
   vim.lsp.config("clangd", {
     cmd = { "clangd" },
+    filetypes = clangdFiletypes,
   })
 else
   vim.lsp.config("clangd", {
     cmd = { "clangd", "--query-driver=C:/ProgramData/chocolatey/lib/winlibs/tools/mingw64/bin/g++.exe" },
+    filetypes = clangdFiletypes,
   })
 end
 vim.lsp.enable "clangd"

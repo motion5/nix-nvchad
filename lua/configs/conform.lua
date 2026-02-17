@@ -24,11 +24,17 @@ local options = {
     nix = { "nixfmt" },
   },
 
-  format_on_save = {
-    -- These options will be passed to conform.format()
-    timeout_ms = 500,
-    lsp_fallback = true,
-  },
+  format_on_save = function(bufnr)
+    -- Never fall back to LSP formatting for markdown (prevents clangd mangling headings)
+    local ft = vim.bo[bufnr].filetype
+    if ft == "markdown" then
+      return nil
+    end
+    return {
+      timeout_ms = 500,
+      lsp_fallback = true,
+    }
+  end,
 }
 
 require("conform").setup(options)
