@@ -84,23 +84,5 @@ map({ "n", "t" }, "<A-h>", function()
   }
 end, { desc = "terminal horizontal (double-tap: full)" })
 
--- Ctrl+Alt+direction: exit terminal and navigate to adjacent window
-map("t", "<C-A-j>", function()
-  vim.cmd "stopinsert"
-  vim.cmd "wincmd j"
-end, { desc = "terminal exit and move down" })
-
-map("t", "<C-A-k>", function()
-  vim.cmd "stopinsert"
-  vim.cmd "wincmd k"
-end, { desc = "terminal exit and move up" })
-
-map("t", "<C-A-l>", function()
-  vim.cmd "stopinsert"
-  vim.cmd "wincmd l"
-end, { desc = "terminal exit and move right" })
-
-map("t", "<C-A-h>", function()
-  vim.cmd "stopinsert"
-  vim.cmd "wincmd h"
-end, { desc = "terminal exit and move left" })
+-- TODO: Terminal exit-and-navigate bindings (Ctrl+Shift+J/K/L/H)
+-- Parked: needs Kitty keyboard protocol investigation. See nix-dotfiles/todo.md
