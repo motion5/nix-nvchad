@@ -55,52 +55,56 @@ map({ "n", "t" }, "<A-i>", function()
   }
 end, { desc = "terminal toggle floating term" })
 
--- Double-tap tracking for terminal sizing
-local last_v_press = 0
-local last_h_press = 0
-local double_tap_threshold = 500 -- milliseconds
-
+-- Terminal splits: Alt+direction for 50%, Alt+Shift for full size
 map({ "n", "t" }, "<A-v>", function()
-  local now = vim.loop.now()
-  local is_double_tap = (now - last_v_press) < double_tap_threshold
-  last_v_press = now
-
   require("nvchad.term").toggle {
     pos = "vsp",
     id = "vtoggleTerm",
-    size = is_double_tap and 1.0 or 0.5,
+    size = 0.5,
   }
-end, { desc = "terminal toggle vertical term (double-tap for full height)" })
+end, { desc = "terminal toggle vertical term (50%)" })
 
 map({ "n", "t" }, "<A-h>", function()
-  local now = vim.loop.now()
-  local is_double_tap = (now - last_h_press) < double_tap_threshold
-  last_h_press = now
-
   require("nvchad.term").toggle {
     pos = "sp",
     id = "htoggleTerm",
-    size = is_double_tap and 1.0 or 0.5,
+    size = 0.5,
   }
-end, { desc = "terminal toggle horizontal term (double-tap for full width)" })
+end, { desc = "terminal toggle horizontal term (50%)" })
 
--- Alt+Shift+direction: exit terminal and navigate to adjacent window
-map("t", "<A-S-j>", function()
+map({ "n", "t" }, "<A-S-v>", function()
+  require("nvchad.term").toggle {
+    pos = "vsp",
+    id = "vtoggleTerm",
+    size = 1.0,
+  }
+end, { desc = "terminal toggle vertical term (full)" })
+
+map({ "n", "t" }, "<A-S-h>", function()
+  require("nvchad.term").toggle {
+    pos = "sp",
+    id = "htoggleTerm",
+    size = 1.0,
+  }
+end, { desc = "terminal toggle horizontal term (full)" })
+
+-- Ctrl+Alt+direction: exit terminal and navigate to adjacent window
+map("t", "<C-A-j>", function()
   vim.cmd "stopinsert"
   vim.cmd "wincmd j"
 end, { desc = "terminal exit and move down" })
 
-map("t", "<A-S-k>", function()
+map("t", "<C-A-k>", function()
   vim.cmd "stopinsert"
   vim.cmd "wincmd k"
 end, { desc = "terminal exit and move up" })
 
-map("t", "<A-S-l>", function()
+map("t", "<C-A-l>", function()
   vim.cmd "stopinsert"
   vim.cmd "wincmd l"
 end, { desc = "terminal exit and move right" })
 
-map("t", "<A-S-h>", function()
+map("t", "<C-A-h>", function()
   vim.cmd "stopinsert"
   vim.cmd "wincmd h"
 end, { desc = "terminal exit and move left" })
