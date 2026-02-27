@@ -84,23 +84,23 @@ map({ "n", "t" }, "<A-h>", function()
   }
 end, { desc = "terminal toggle horizontal term (double-tap for full width)" })
 
--- Ctrl+Shift+direction: exit terminal and navigate to adjacent window
-map("t", "<C-S-j>", function()
+-- Alt+Shift+direction: exit terminal and navigate to adjacent window
+map("t", "<A-S-j>", function()
   vim.cmd "stopinsert"
   vim.cmd "wincmd j"
 end, { desc = "terminal exit and move down" })
 
-map("t", "<C-S-k>", function()
+map("t", "<A-S-k>", function()
   vim.cmd "stopinsert"
   vim.cmd "wincmd k"
 end, { desc = "terminal exit and move up" })
 
-map("t", "<C-S-l>", function()
+map("t", "<A-S-l>", function()
   vim.cmd "stopinsert"
   vim.cmd "wincmd l"
 end, { desc = "terminal exit and move right" })
 
-map("t", "<C-S-h>", function()
+map("t", "<A-S-h>", function()
   vim.cmd "stopinsert"
   vim.cmd "wincmd h"
 end, { desc = "terminal exit and move left" })
