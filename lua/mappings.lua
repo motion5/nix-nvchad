@@ -72,7 +72,7 @@ map({ "n", "t" }, "<A-h>", function()
   }
 end, { desc = "terminal toggle horizontal term (50%)" })
 
-map({ "n", "t" }, "<A-S-v>", function()
+map({ "n", "t" }, "<A-V>", function()
   require("nvchad.term").toggle {
     pos = "vsp",
     id = "vtoggleTerm",
@@ -80,7 +80,7 @@ map({ "n", "t" }, "<A-S-v>", function()
   }
 end, { desc = "terminal toggle vertical term (full)" })
 
-map({ "n", "t" }, "<A-S-h>", function()
+map({ "n", "t" }, "<A-H>", function()
   require("nvchad.term").toggle {
     pos = "sp",
     id = "htoggleTerm",
