@@ -55,38 +55,34 @@ map({ "n", "t" }, "<A-i>", function()
   }
 end, { desc = "terminal toggle floating term" })
 
--- Terminal splits: Alt+direction for 50%, Alt+Shift for full size
+-- Terminal splits: Alt+H/V to toggle, double-tap for full size
+local last_v_press = 0
+local last_h_press = 0
+local double_tap_threshold = 500 -- milliseconds
+
 map({ "n", "t" }, "<A-v>", function()
+  local now = vim.loop.now()
+  local is_double_tap = (now - last_v_press) < double_tap_threshold
+  last_v_press = now
+
   require("nvchad.term").toggle {
     pos = "vsp",
     id = "vtoggleTerm",
-    size = 0.5,
+    size = is_double_tap and 1.0 or 0.5,
   }
-end, { desc = "terminal toggle vertical term (50%)" })
+end, { desc = "terminal vertical (double-tap: full)" })
 
 map({ "n", "t" }, "<A-h>", function()
+  local now = vim.loop.now()
+  local is_double_tap = (now - last_h_press) < double_tap_threshold
+  last_h_press = now
+
   require("nvchad.term").toggle {
     pos = "sp",
     id = "htoggleTerm",
-    size = 0.5,
+    size = is_double_tap and 1.0 or 0.5,
   }
-end, { desc = "terminal toggle horizontal term (50%)" })
-
-map({ "n", "t" }, "<A-V>", function()
-  require("nvchad.term").toggle {
-    pos = "vsp",
-    id = "vtoggleTerm",
-    size = 1.0,
-  }
-end, { desc = "terminal toggle vertical term (full)" })
-
-map({ "n", "t" }, "<A-H>", function()
-  require("nvchad.term").toggle {
-    pos = "sp",
-    id = "htoggleTerm",
-    size = 1.0,
-  }
-end, { desc = "terminal toggle horizontal term (full)" })
+end, { desc = "terminal horizontal (double-tap: full)" })
 
 -- Ctrl+Alt+direction: exit terminal and navigate to adjacent window
 map("t", "<C-A-j>", function()
