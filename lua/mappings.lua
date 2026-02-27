@@ -55,10 +55,31 @@ map({ "n", "t" }, "<A-i>", function()
   }
 end, { desc = "terminal toggle floating term" })
 
+-- Double-tap tracking for terminal sizing
+local last_v_press = 0
+local last_h_press = 0
+local double_tap_threshold = 500 -- milliseconds
+
 map({ "n", "t" }, "<A-v>", function()
+  local now = vim.loop.now()
+  local is_double_tap = (now - last_v_press) < double_tap_threshold
+  last_v_press = now
+
   require("nvchad.term").toggle {
     pos = "vsp",
     id = "vtoggleTerm",
-    size = 0.5,
+    size = is_double_tap and 1.0 or 0.5,
   }
-end, { desc = "terminal toggle vertical term" })
+end, { desc = "terminal toggle vertical term (double-tap for full height)" })
+
+map({ "n", "t" }, "<A-h>", function()
+  local now = vim.loop.now()
+  local is_double_tap = (now - last_h_press) < double_tap_threshold
+  last_h_press = now
+
+  require("nvchad.term").toggle {
+    pos = "sp",
+    id = "htoggleTerm",
+    size = is_double_tap and 1.0 or 0.5,
+  }
+end, { desc = "terminal toggle horizontal term (double-tap for full width)" })
