@@ -4,6 +4,33 @@ require "nvchad.mappings"
 
 local map = vim.keymap.set
 
+-- Telescope: toggle hidden-dir search on <leader>ff
+-- Defaults ON; excludes .git and node_modules; depth-limited to avoid noise
+local _ff_hidden = true
+map("n", "<leader>ff", function()
+  _ff_hidden = not _ff_hidden
+  require("telescope.builtin").find_files {
+    hidden = _ff_hidden,
+    find_command = _ff_hidden and {
+      "fd", "--type", "f",
+      "--hidden",
+      "--exclude", ".git",
+      "--exclude", "node_modules",
+      "--max-depth", "6",
+    } or nil,
+    prompt_title = _ff_hidden and "Files (hidden)" or "Files",
+  }
+  vim.notify("find_files hidden: " .. tostring(_ff_hidden), vim.log.levels.INFO)
+end, { desc = "telescope find files (toggle hidden)" })
+
+-- Live grep including hidden dirs, excluding .git
+map("n", "<leader>fW", function()
+  require("telescope.builtin").live_grep {
+    additional_args = { "--hidden", "--glob", "!**/.git/**" },
+    prompt_title = "Grep (hidden)",
+  }
+end, { desc = "telescope live grep (hidden)" })
+
 -- map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jj", "<ESC>")
 
