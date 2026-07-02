@@ -4,24 +4,15 @@ require "nvchad.mappings"
 
 local map = vim.keymap.set
 
--- Telescope: toggle hidden-dir search on <leader>ff
--- Defaults ON; excludes .git and node_modules; depth-limited to avoid noise
-local _ff_hidden = true
+-- Override <leader>ff to always include hidden dirs, excluding .git/node_modules.
+-- NvChad's default <leader>fa is kept as the "no filters" escape hatch.
 map("n", "<leader>ff", function()
-  _ff_hidden = not _ff_hidden
   require("telescope.builtin").find_files {
-    hidden = _ff_hidden,
-    find_command = _ff_hidden and {
-      "fd", "--type", "f",
-      "--hidden",
-      "--exclude", ".git",
-      "--exclude", "node_modules",
-      "--max-depth", "6",
-    } or nil,
-    prompt_title = _ff_hidden and "Files (hidden)" or "Files",
+    hidden = true,
+    follow = true,
+    file_ignore_patterns = { "^%.git/", "node_modules/" },
   }
-  vim.notify("find_files hidden: " .. tostring(_ff_hidden), vim.log.levels.INFO)
-end, { desc = "telescope find files (toggle hidden)" })
+end, { desc = "telescope find files (hidden)" })
 
 -- Live grep including hidden dirs, excluding .git
 map("n", "<leader>fW", function()
